@@ -21,6 +21,52 @@ button{background:var(--accent);color:#03240f;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
+    <!-- seção de Drive -->
+<section id="driveSection">
+  <h2>Arquivos Para Utilização dos Técnicos</h2>
+  <button id="driveRefresh">Atualizar</button>
+  <ul id="driveFiles"></ul>
+</section>
+
+<script>
+const DRIVE_API_KEY = 'AIzaSyDS0PtALxxlHIZ0Do519aF7dWAtJtwXX-c';        // -> coloque sua API Key aqui
+const DRIVE_FOLDER_ID = '1a0CFmRm8LKw4-9NvM_cUAeR4cVr38iEm';    // -> coloque o ID da pasta aqui
+
+async function loadDriveFiles(){
+  const q = '${DRIVE_FOLDER_ID}' in parents;
+  const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType,webViewLink,modifiedTime)&pageSize=200&key=${DRIVE_API_KEY}`;
+  try{
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.error){
+      console.error(data.error);
+      document.getElementById('driveFiles').innerHTML = <li>Erro: ${data.error.message}</li>;
+      return;
+    }
+    renderDriveFiles(data.files || []);
+  }catch(err){
+    console.error(err);
+    document.getElementById('driveFiles').innerHTML = <li>Erro ao conectar à Drive API</li>;
+  }
+}
+
+function renderDriveFiles(files){
+  const ul = document.getElementById('driveFiles');
+  ul.innerHTML = '';
+  if(!files.length){ ul.innerHTML = '<li>Nenhum arquivo encontrado.</li>'; return; }
+  files.forEach(f => {
+    // link de visualização (abrir no viewer) e link direto para download
+    const view = f.webViewLink || `https://drive.google.com/file/d/${f.id}/view`;
+    const download = `https://drive.google.com/uc?export=download&id=${f.id}`;
+    const li = document.createElement('li');
+    li.innerHTML = `${f.name} — <a href="${view}" target="_blank">Abrir</a> | <a href="${download}" target="_blank">Baixar</a> <span style="color:#999">(${f.mimeType})</span>`;
+    ul.appendChild(li);
+  });
+}
+
+document.getElementById('driveRefresh').addEventListener('click', loadDriveFiles);
+loadDriveFiles(); // carrega ao abrir
+</script>
 <script>
 if(localStorage.getItem('loggedIn')!=='true'){alert('Você precisa estar logado!');window.location.href='index.html';}
 </script>
