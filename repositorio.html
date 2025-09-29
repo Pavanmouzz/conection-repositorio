@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel de Repositório — Conection</title>
+  <style>
+    :root{
+      --bg:#0b0f0b;
+      --panel:#0f2618;
+      --accent:#2ecc71;
+      --muted:#9aa19a;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    body{
+      margin:0;background:var(--bg);color:#e6eee6;
+      display:flex;flex-direction:column;align-items:center;padding:20px;
+    }
+    h1{margin:20px 0 10px;font-size:26px;color:var(--accent)}
+    .container{
+      width:100%;max-width:960px;background:var(--panel);
+      border-radius:16px;padding:24px;box-shadow:0 10px 25px rgba(0,0,0,0.5);
+    }
+    table{width:100%;border-collapse:collapse;margin-top:16px}
+    th,td{padding:12px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+    th{color:var(--accent);font-weight:600}
+    tr:hover{background:rgba(255,255,255,0.02)}
+    input,button{
+      font-size:15px;border:none;border-radius:8px;padding:8px 10px;
+    }
+    input[type="text"], input[type="password"]{
+      width:100%;background:rgba(255,255,255,0.04);color:#e6eee6;
+    }
+    button{
+      background:var(--accent);color:#03240f;font-weight:700;cursor:pointer;
+    }
+    .form-row{display:grid;grid-template-columns:1fr 1fr 1fr 120px;gap:10px;margin-top:20px}
+    .toggle-btn{background:none;color:var(--muted);cursor:pointer;font-size:13px;margin-left:8px}
+  </style>
+</head>
+<body>
+  <h1>Painel de Repositório</h1>
+  <div class="container">
+    <p style="color:var(--muted)">Adicione aqui drivers, links ou notas internas. <b>⚠️ Não coloque senhas reais sem backend seguro!</b></p><div class="form-row">
+  <input id="nome" type="text" placeholder="Nome" required>
+  <input id="descricao" type="text" placeholder="Descrição / Link" required>
+  <input id="senha" type="password" placeholder="Senha (opcional)">
+  <button id="addBtn">Adicionar</button>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Nome</th><th>Descrição</th><th>Senha</th><th>Ações</th></tr>
+  </thead>
+  <tbody id="repoTable"></tbody>
+</table>
+
+  </div>  <script>
+    const repoTable = document.getElementById('repoTable');
+    const nome = document.getElementById('nome');
+    const descricao = document.getElementById('descricao');
+    const senha = document.getElementById('senha');
+    const addBtn = document.getElementById('addBtn');
+
+    let dados = JSON.parse(localStorage.getItem('repositorioConection') || '[]');
+
+    function render(){
+      repoTable.innerHTML = '';
+      dados.forEach((item,i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.nome}</td>
+          <td><a href="${item.descricao}" target="_blank" style="color:var(--accent)">${item.descricao}</a></td>
+          <td>
+            <span id="pass-${i}">••••••</span>
+            ${item.senha ? <button class="toggle-btn" onclick="toggleSenha(${i})">mostrar</button> : ''}
+          </td>
+          <td><button onclick="remover(${i})">Excluir</button></td>
+        `;
+        repoTable.appendChild(tr);
+      });
+    }
+
+    function toggleSenha(i){
+      const span = document.getElementById(`pass-${i}`);
+      if(span.textContent === '••••••'){
+        span.textContent = dados[i].senha;
+      }else{
+        span.textContent = '••••••';
+      }
+    }
+
+    function remover(i){
+      dados.splice(i,1);
+      salvar();
+    }
+
+    function salvar(){
+      localStorage.setItem('repositorioConection', JSON.stringify(dados));
+      render();
+    }
+
+    addBtn.addEventListener('click', () => {
+      if(!nome.value.trim() || !descricao.value.trim()) return alert('Preencha nome e descrição');
+      dados.push({ nome: nome.value.trim(), descricao: descricao.value.trim(), senha: senha.value.trim() });
+      nome.value = descricao.value = senha.value = '';
+      salvar();
+    });
+
+    render();
+  </script></body>
+</html>
