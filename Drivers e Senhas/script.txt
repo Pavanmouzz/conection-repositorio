@@ -1,0 +1,361 @@
+<!doctype html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tela de Login — Conection</title>
+  <style>
+    :root{
+      --bg:#0b0f0b; /* quase preto */
+      --panel:#0f2618; /* verde escuro */
+      --accent:#2ecc71; /* verde vibrante */
+      --muted:#9aa19a;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--bg) 0%, #06110a 60%);
+  color:#e6eee6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.card{
+  width:100%;
+  max-width:960px;
+  background:linear-gradient(180deg,var(--panel), rgba(5,20,10,0.6));
+  border-radius:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display:grid;
+  grid-template-columns: 1fr 420px;
+  overflow:hidden;
+  gap:0;
+}
+
+.hero{
+  padding:40px 48px;
+  background:linear-gradient(135deg, rgba(0,0,0,0.12), transparent);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:18px;
+}
+
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.logo{
+  width:56px;height:56px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent), #1abc5b);
+  display:flex;align-items:center;justify-content:center;font-weight:700;color:#03240f;font-size:20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+h1{margin:0;font-size:28px}
+p.lead{margin:0;color:var(--muted)}
+
+form{
+  padding:36px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+}
+
+.field{display:flex;flex-direction:column;gap:6px}
+label{font-size:13px;color:var(--muted)}
+input[type="text"], input[type="password"]{
+  padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:var(--glass);color:inherit;outline:none;font-size:15px;
+  transition:box-shadow .15s, transform .08s;
+}
+input:focus{box-shadow:0 6px 18px rgba(0,0,0,0.6);transform:translateY(-1px)}
+
+.actions{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.btn{
+  padding:10px 16px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent), #27ae60);color:#03240f;font-weight:700;cursor:pointer;font-size:15px;box-shadow:0 8px 30px rgba(46,204,113,0.12);
+}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+
+.small{font-size:13px;color:var(--muted)}
+
+.help{font-size:13px;color:var(--muted);margin-top:6px}
+.error{color:#ff7b7b;font-size:13px}
+
+.show-pass{display:flex;gap:8px;align-items:center}
+
+.right-illustration{
+  min-height:100%;
+  background:linear-gradient(180deg, rgba(2,20,8,0.6), rgba(0,0,0,0.2)), url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600"><g fill="none" fill-rule="evenodd"><rect width="600" height="600" fill="%230b0f0b" rx="0"/><g transform="translate(30,30)" stroke="%232ecc71" stroke-opacity="0.08" stroke-width="2"><circle cx="300" cy="260" r="180"/><circle cx="160" cy="160" r="110"/><circle cx="420" cy="380" r="90"/></g></g></svg>') center/cover no-repeat;
+  display:flex;align-items:center;justify-content:center;
+  padding:32px;
+  color:var(--muted);
+  flex-direction:column;
+  gap:12px;
+}
+
+.tip{background:rgba(0,0,0,0.15);padding:12px;border-radius:10px;max-width:320px;text-align:center}
+
+@media (max-width:880px){
+  .card{grid-template-columns:1fr;max-width:520px}
+  .right-illustration{order:2}
+}
+
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="loginTitle">
+    <section class="hero">
+      <div class="brand">
+        <div class="logo">C</div>
+        <div>
+          <div style="font-size:14px;color:var(--muted)">Conection</div>
+          <div style="font-weight:700">Painel de Acesso</div>
+        </div>
+      </div><div style="margin-top:12px;">
+    <h1 id="loginTitle">Entrar na conta</h1>
+    <p class="lead">Informe seu usuário e senha para acessar o sistema.</p>
+  </div>
+
+  <form id="loginForm" novalidate>
+    <div class="field">
+      <label for="username">Usuário</label>
+      <input id="username" name="username" type="text" autocomplete="username" placeholder="seu.usuario" required />
+    </div>
+
+    <div class="field">
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required minlength="4" />
+      <div class="show-pass">
+        <input id="togglePass" type="checkbox" aria-label="Mostrar senha" /> <label for="togglePass" class="small">Mostrar senha</label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div>
+        <button type="button" class="btn ghost" id="forgotBtn">Esqueci a senha</button>
+      </div>
+      <div>
+        <button type="submit" class="btn" id="submitBtn">Entrar</button>
+      </div>
+    </div>
+
+    <div id="msg" class="help" role="status" aria-live="polite"></div>
+  </form>
+
+  <div style="margin-top:8px;color:var(--muted);font-size:13px">Dica: use as credenciais fornecidas pelo administrador.</div>
+</section>
+
+<aside class="right-illustration">
+  <div style="max-width:320px">
+    <div style="font-weight:700;font-size:16px">Acesso seguro</div>
+    <div class="tip">Este formulário é apenas a interface — integre-o ao seu backend (API) para autenticação real. Veja comentários no código.</div>
+  </div>
+</aside>
+
+  </div>  <script>
+    // ======= CONFIGURAÇÃO (ajuste conforme necessário) =======
+    // Exemplo de credenciais hardcoded para teste (apenas para ambiente de desenvolvimento)
+    const HARDCODED_CREDENTIALS = { username: 'admin', password: '1234' };
+
+    // Função que simula chamada a backend; substitua por fetch() na integração real
+    function fakeAuthenticate({ username, password }){
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const ok = username === HARDCODED_CREDENTIALS.username && password === HARDCODED_CREDENTIALS.password;
+          resolve({ ok, token: ok ? 'fake-jwt-token' : null });
+        }, 700);
+      });
+    }
+
+    // ======= LÓGICA DO FORMULÁRIO =======
+    const form = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const msg = document.getElementById('msg');
+    const submitBtn = document.getElementById('submitBtn');
+    const togglePass = document.getElementById('togglePass');
+    const forgotBtn = document.getElementById('forgotBtn');
+
+    togglePass.addEventListener('change', () => {
+      passwordInput.type = togglePass.checked ? 'text' : 'password';
+    });
+
+    forgotBtn.addEventListener('click', () => {
+      msg.textContent = 'Procure o administrador para resetar sua senha.';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+
+      if(!username || !password){
+        msg.textContent = 'Preencha usuário e senha.';
+        msg.className = 'error';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Validando...';
+
+      try{
+        // Troque fakeAuthenticate por fetch('/api/login', { method:'POST', body: JSON.stringify({username,password}), headers:{'Content-Type':'application/json'} })
+        const resp = await fakeAuthenticate({ username, password });
+        if(resp.ok){
+          // exemplo: salvar token no localStorage e redirecionar
+          localStorage.setItem('auth_token', resp.token);
+          msg.className = '';
+          msg.textContent = 'Login realizado com sucesso — redirecionando...';
+          setTimeout(() => { window.location.href = '/dashboard'; }, 700);
+        } else {
+          msg.className = 'error';
+          msg.textContent = 'Usuário ou senha inválidos.';
+        }
+      }catch(err){
+        msg.className = 'error';
+        msg.textContent = 'Erro ao conectar com o servidor.';
+        console.error(err);
+      }finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Entrar';
+      }
+    });
+
+    // Acessibilidade: foco inicial
+    usernameInput.focus();
+
+    // Observações de segurança (remova antes de subir em produção):
+    // - Nunca guarde senhas em texto puro no backend;
+    // - Use HTTPS, tokens seguros e proteja contra CSRF.
+  </script></body>
+</html>
+
+
+
+
+
+
+
+<!doctype html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel de Repositório — Conection</title>
+  <style>
+    :root{
+      --bg:#0b0f0b;
+      --panel:#0f2618;
+      --accent:#2ecc71;
+      --muted:#9aa19a;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    body{
+      margin:0;background:var(--bg);color:#e6eee6;
+      display:flex;flex-direction:column;align-items:center;padding:20px;
+    }
+    h1{margin:20px 0 10px;font-size:26px;color:var(--accent)}
+    .container{
+      width:100%;max-width:960px;background:var(--panel);
+      border-radius:16px;padding:24px;box-shadow:0 10px 25px rgba(0,0,0,0.5);
+    }
+    table{width:100%;border-collapse:collapse;margin-top:16px}
+    th,td{padding:12px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+    th{color:var(--accent);font-weight:600}
+    tr:hover{background:rgba(255,255,255,0.02)}
+    input,button{
+      font-size:15px;border:none;border-radius:8px;padding:8px 10px;
+    }
+    input[type="text"], input[type="password"]{
+      width:100%;background:rgba(255,255,255,0.04);color:#e6eee6;
+    }
+    button{
+      background:var(--accent);color:#03240f;font-weight:700;cursor:pointer;
+    }
+    .form-row{display:grid;grid-template-columns:1fr 1fr 1fr 120px;gap:10px;margin-top:20px}
+    .toggle-btn{background:none;color:var(--muted);cursor:pointer;font-size:13px;margin-left:8px}
+  </style>
+</head>
+<body>
+  <h1>Painel de Repositório</h1>
+  <div class="container">
+    <p style="color:var(--muted)">Adicione aqui drivers, links ou notas internas. <b>⚠️ Não coloque senhas reais sem backend seguro!</b></p><div class="form-row">
+  <input id="nome" type="text" placeholder="Nome" required>
+  <input id="descricao" type="text" placeholder="Descrição / Link" required>
+  <input id="senha" type="password" placeholder="Senha (opcional)">
+  <button id="addBtn">Adicionar</button>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Nome</th><th>Descrição</th><th>Senha</th><th>Ações</th></tr>
+  </thead>
+  <tbody id="repoTable"></tbody>
+</table>
+
+  </div>  <script>
+    const repoTable = document.getElementById('repoTable');
+    const nome = document.getElementById('nome');
+    const descricao = document.getElementById('descricao');
+    const senha = document.getElementById('senha');
+    const addBtn = document.getElementById('addBtn');
+
+    let dados = JSON.parse(localStorage.getItem('repositorioConection') || '[]');
+
+    function render(){
+      repoTable.innerHTML = '';
+      dados.forEach((item,i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.nome}</td>
+          <td><a href="${item.descricao}" target="_blank" style="color:var(--accent)">${item.descricao}</a></td>
+          <td>
+            <span id="pass-${i}">••••••</span>
+            ${item.senha ? <button class="toggle-btn" onclick="toggleSenha(${i})">mostrar</button> : ''}
+          </td>
+          <td><button onclick="remover(${i})">Excluir</button></td>
+        `;
+        repoTable.appendChild(tr);
+      });
+    }
+
+    function toggleSenha(i){
+      const span = document.getElementById(pass-${i});
+      if(span.textContent === '••••••'){
+        span.textContent = dados[i].senha;
+      }else{
+        span.textContent = '••••••';
+      }
+    }
+
+    function remover(i){
+      dados.splice(i,1);
+      salvar();
+    }
+
+    function salvar(){
+      localStorage.setItem('repositorioConection', JSON.stringify(dados));
+      render();
+    }
+
+    addBtn.addEventListener('click', () => {
+      if(!nome.value.trim() || !descricao.value.trim()) return alert('Preencha nome e descrição');
+      dados.push({ nome: nome.value.trim(), descricao: descricao.value.trim(), senha: senha.value.trim() });
+      nome.value = descricao.value = senha.value = '';
+      salvar();
+    });
+
+    render();
+  </script></body>
+</html>

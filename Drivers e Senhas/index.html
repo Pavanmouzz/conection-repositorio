@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tela de Login — Conection</title>
+<style>
+:root{--bg:#0b0f0b;--panel:#0f2618;--accent:#2ecc71;--muted:#9aa19a;font-family:Inter, system-ui, sans-serif}
+body{margin:0;background:var(--bg);color:#e6eee6;display:flex;align-items:center;justify-content:center;height:100vh;padding:24px}
+.card{width:100%;max-width:400px;background:var(--panel);border-radius:16px;padding:32px;box-shadow:0 10px 25px rgba(0,0,0,0.5);display:flex;flex-direction:column;gap:16px}
+h1{margin:0;color:var(--accent);text-align:center}
+input,button{font-size:15px;border:none;border-radius:8px;padding:10px;margin-top:8px;width:100%}
+input{background:rgba(255,255,255,0.04);color:#e6eee6}
+button{background:var(--accent);color:#03240f;font-weight:700;cursor:pointer}
+.help{font-size:13px;color:var(--muted);margin-top:6px;text-align:center}
+.error{color:#ff7b7b}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Login Área Técnica</h1>
+<input id="username" type="text" placeholder="Usuário">
+<input id="password" type="password" placeholder="Senha">
+<button id="loginBtn">Entrar</button>
+<div id="msg" class="help"></div>
+</div>
+<script>
+const loginBtn=document.getElementById('loginBtn');
+const msg=document.getElementById('msg');
+loginBtn.addEventListener('click',()=>{
+const user=document.getElementById('username').value.trim();
+const pass=document.getElementById('password').value;
+if(user==='admin' && pass==='1234'){
+localStorage.setItem('loggedIn','true');
+msg.textContent='Login OK! Redirecionando...';
+setTimeout(()=>window.location.href='painel_repositorio.html',500);
+}else{msg.textContent='Usuário ou senha inválidos';msg.className='help error';}
+});
+</script>
+</body>
+</html>
